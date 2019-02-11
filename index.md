@@ -4,8 +4,6 @@
 		body { background: url("http://gifsla.ru/images/animation/44.gif"); }
 	</style>
 	<title>Homework 2</title>
-</head>
-<body>
 	<script>
     	function encrypt() {
   		var alpha = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -155,166 +153,168 @@
   			var lsw, msw, lowOrder, highOrder;
 
   			lsw = (a.lowOrder & 0xFFFF) + (b.lowOrder & 0xFFFF) + (c.lowOrder & 0xFFFF) + (d.lowOrder & 0xFFFF);
-  msw = (a.lowOrder >>> 16) + (b.lowOrder >>> 16) + (c.lowOrder >>> 16) + (d.lowOrder >>> 16) + (lsw >>> 16);
-  lowOrder = ((msw & 0xFFFF) << 16) | (lsw & 0xFFFF);
+  			msw = (a.lowOrder >>> 16) + (b.lowOrder >>> 16) + (c.lowOrder >>> 16) + (d.lowOrder >>> 16) + (lsw >>> 16);
+  			lowOrder = ((msw & 0xFFFF) << 16) | (lsw & 0xFFFF);
 
-  lsw = (a.highOrder & 0xFFFF) + (b.highOrder & 0xFFFF) + (c.highOrder & 0xFFFF) + (d.highOrder & 0xFFFF) + (msw >>> 16);
-  msw = (a.highOrder >>> 16) + (b.highOrder >>> 16) + (c.highOrder >>> 16) + (d.highOrder >>> 16) + (lsw >>> 16);
-  highOrder = ((msw & 0xFFFF) << 16) | (lsw & 0xFFFF);
+  			lsw = (a.highOrder & 0xFFFF) + (b.highOrder & 0xFFFF) + (c.highOrder & 0xFFFF) + (d.highOrder & 0xFFFF) + (msw >>> 16);
+  			msw = (a.highOrder >>> 16) + (b.highOrder >>> 16) + (c.highOrder >>> 16) + (d.highOrder >>> 16) + (lsw >>> 16);
+  			highOrder = ((msw & 0xFFFF) << 16) | (lsw & 0xFFFF);
 
-  return new int64(highOrder, lowOrder);
-  }
+  		return new int64(highOrder, lowOrder);
+  		}
 
-  function safe_add_5(a, b, c, d, e) {
-  var lsw, msw, lowOrder, highOrder;
+  		function safe_add_5(a, b, c, d, e) {
+  			var lsw, msw, lowOrder, highOrder;
 
-  lsw = (a.lowOrder & 0xFFFF) + (b.lowOrder & 0xFFFF) + (c.lowOrder & 0xFFFF) + (d.lowOrder & 0xFFFF) + (e.lowOrder & 0xFFFF);
-  msw = (a.lowOrder >>> 16) + (b.lowOrder >>> 16) + (c.lowOrder >>> 16) + (d.lowOrder >>> 16) + (e.lowOrder >>> 16) + (lsw >>> 16);
-  lowOrder = ((msw & 0xFFFF) << 16) | (lsw & 0xFFFF);
+  			lsw = (a.lowOrder & 0xFFFF) + (b.lowOrder & 0xFFFF) + (c.lowOrder & 0xFFFF) + (d.lowOrder & 0xFFFF) + (e.lowOrder & 0xFFFF);
+  			msw = (a.lowOrder >>> 16) + (b.lowOrder >>> 16) + (c.lowOrder >>> 16) + (d.lowOrder >>> 16) + (e.lowOrder >>> 16) + (lsw >>> 16);
+  			lowOrder = ((msw & 0xFFFF) << 16) | (lsw & 0xFFFF);
 
-  lsw = (a.highOrder & 0xFFFF) + (b.highOrder & 0xFFFF) + (c.highOrder & 0xFFFF) + (d.highOrder & 0xFFFF) + (e.highOrder & 0xFFFF) + (msw >>> 16);
-  msw = (a.highOrder >>> 16) + (b.highOrder >>> 16) + (c.highOrder >>> 16) + (d.highOrder >>> 16) + (e.highOrder >>> 16) + (lsw >>> 16);
-  highOrder = ((msw & 0xFFFF) << 16) | (lsw & 0xFFFF);
+  			lsw = (a.highOrder & 0xFFFF) + (b.highOrder & 0xFFFF) + (c.highOrder & 0xFFFF) + (d.highOrder & 0xFFFF) + (e.highOrder & 0xFFFF) + (msw >>> 16);
+  			msw = (a.highOrder >>> 16) + (b.highOrder >>> 16) + (c.highOrder >>> 16) + (d.highOrder >>> 16) + (e.highOrder >>> 16) + (lsw >>> 16);
+  			highOrder = ((msw & 0xFFFF) << 16) | (lsw & 0xFFFF);
 
-  return new int64(highOrder, lowOrder);
-  }
+  		return new int64(highOrder, lowOrder);
+  		}
 
-  function maj(x, y, z) {
-  return new int64(
-  (x.highOrder & y.highOrder) ^ (x.highOrder & z.highOrder) ^ (y.highOrder & z.highOrder),
-  (x.lowOrder & y.lowOrder) ^ (x.lowOrder & z.lowOrder) ^ (y.lowOrder & z.lowOrder)
-  );
-  }
+  		function maj(x, y, z) {
+  		return new int64(
+  		(x.highOrder & y.highOrder) ^ (x.highOrder & z.highOrder) ^ (y.highOrder & z.highOrder),
+  		(x.lowOrder & y.lowOrder) ^ (x.lowOrder & z.lowOrder) ^ (y.lowOrder & z.lowOrder)
+  		);
+  		}
 
-  function ch(x, y, z) {
-  return new int64(
-  (x.highOrder & y.highOrder) ^ (~x.highOrder & z.highOrder),
-  (x.lowOrder & y.lowOrder) ^ (~x.lowOrder & z.lowOrder)
-  );
-  }
+  		function ch(x, y, z) {
+  		return new int64(
+  		(x.highOrder & y.highOrder) ^ (~x.highOrder & z.highOrder),
+  		(x.lowOrder & y.lowOrder) ^ (~x.lowOrder & z.lowOrder)
+  		);
+  		}
 
-  function rotr(x, n) {
-  if (n <= 32) {
-  return new int64(
-  (x.highOrder >>> n) | (x.lowOrder << (32 - n)),
-  (x.lowOrder >>> n) | (x.highOrder << (32 - n))
-  );
-  } else {
-  return new int64(
-  (x.lowOrder >>> n) | (x.highOrder << (32 - n)),
-  (x.highOrder >>> n) | (x.lowOrder << (32 - n))
-  );
-  }
-  }
+  		function rotr(x, n) {
+  			if (n <= 32) {
+  				return new int64(
+  				(x.highOrder >>> n) | (x.lowOrder << (32 - n)),
+  				(x.lowOrder >>> n) | (x.highOrder << (32 - n))
+  				);
+  				} else {
+  					return new int64(
+  					(x.lowOrder >>> n) | (x.highOrder << (32 - n)),
+  					(x.highOrder >>> n) | (x.lowOrder << (32 - n))
+  					);
+  				}
+  		}
 
-  function sigma0(x) {
-  var rotr28 = rotr(x, 28);
-  var rotr34 = rotr(x, 34);
-  var rotr39 = rotr(x, 39);
+  		function sigma0(x) {
+  			var rotr28 = rotr(x, 28);
+  			var rotr34 = rotr(x, 34);
+  			var rotr39 = rotr(x, 39);
 
-  return new int64(
-  rotr28.highOrder ^ rotr34.highOrder ^ rotr39.highOrder,
-  rotr28.lowOrder ^ rotr34.lowOrder ^ rotr39.lowOrder
-  );
-  }
+  			return new int64(
+  			rotr28.highOrder ^ rotr34.highOrder ^ rotr39.highOrder,
+  			rotr28.lowOrder ^ rotr34.lowOrder ^ rotr39.lowOrder
+  			);
+  		}
 
-  function sigma1(x) {
-  var rotr14 = rotr(x, 14);
-  var rotr18 = rotr(x, 18);
-  var rotr41 = rotr(x, 41);
+  		function sigma1(x) {
+  			var rotr14 = rotr(x, 14);
+  			var rotr18 = rotr(x, 18);
+  			var rotr41 = rotr(x, 41);
 
-  return new int64(
-  rotr14.highOrder ^ rotr18.highOrder ^ rotr41.highOrder,
-  rotr14.lowOrder ^ rotr18.lowOrder ^ rotr41.lowOrder
-  );
-  }
+  			return new int64(
+  			rotr14.highOrder ^ rotr18.highOrder ^ rotr41.highOrder,
+  			rotr14.lowOrder ^ rotr18.lowOrder ^ rotr41.lowOrder
+  			);
+  		}
 
-  function gamma0(x) {
-  var rotr1 = rotr(x, 1), rotr8 = rotr(x, 8), shr7 = shr(x, 7);
+  		function gamma0(x) {
+  			var rotr1 = rotr(x, 1), rotr8 = rotr(x, 8), shr7 = shr(x, 7);
 
-  return new int64(
-  rotr1.highOrder ^ rotr8.highOrder ^ shr7.highOrder,
-  rotr1.lowOrder ^ rotr8.lowOrder ^ shr7.lowOrder
-  );
-  }
+  			return new int64(
+  			rotr1.highOrder ^ rotr8.highOrder ^ shr7.highOrder,
+  			rotr1.lowOrder ^ rotr8.lowOrder ^ shr7.lowOrder
+  			);
+  		}
 
-  function gamma1(x) {
-  var rotr19 = rotr(x, 19);
-  var rotr61 = rotr(x, 61);
-  var shr6 = shr(x, 6);
+  		function gamma1(x) {
+  			var rotr19 = rotr(x, 19);
+  			var rotr61 = rotr(x, 61);
+  			var shr6 = shr(x, 6);
 
-  return new int64(
-  rotr19.highOrder ^ rotr61.highOrder ^ shr6.highOrder,
-  rotr19.lowOrder ^ rotr61.lowOrder ^ shr6.lowOrder
-  );
-  }
+  			return new int64(
+  			rotr19.highOrder ^ rotr61.highOrder ^ shr6.highOrder,
+  			rotr19.lowOrder ^ rotr61.lowOrder ^ shr6.lowOrder
+  			);
+  		}
 
-  function shr(x, n) {
-  if (n <= 32) {
-  return new int64(
-  x.highOrder >>> n,
-  x.lowOrder >>> n | (x.highOrder << (32 - n))
-  );
-  } else {
-  return new int64(
-  0,
-  x.highOrder << (32 - n)
-  );
-  }
-  }
+  		function shr(x, n) {
+  			if (n <= 32) {
+  				return new int64(
+  				x.highOrder >>> n,
+  				x.lowOrder >>> n | (x.highOrder << (32 - n))
+  				);
+  			} else {
+  				return new int64(
+  				0,
+  				x.highOrder << (32 - n)
+  				);
+  			}
+  		}
 
-  str = utf8_encode(str);
-  strlen = str.length*charsize;
-  str = str2binb(str);
+  		str = utf8_encode(str);
+  		strlen = str.length*charsize;
+  		str = str2binb(str);
 
-  str[strlen >> 5] |= 0x80 << (24 - strlen % 32);
-  str[(((strlen + 128) >> 10) << 5) + 31] = strlen;
+  		str[strlen >> 5] |= 0x80 << (24 - strlen % 32);
+  		str[(((strlen + 128) >> 10) << 5) + 31] = strlen;
 
-  for (var i = 0; i < str.length; i += 32) {
-  a = H[0];
-  b = H[1];
-  c = H[2];
-  d = H[3];
-  e = H[4];
-  f = H[5];
-  g = H[6];
-  h = H[7];
+  		for (var i = 0; i < str.length; i += 32) {
+  			a = H[0];
+  			b = H[1];
+  			c = H[2];
+  			d = H[3];
+  			e = H[4];
+  			f = H[5];
+  			g = H[6];
+  			h = H[7];
 
-  for (var j = 0; j < 80; j++) {
-  if (j < 16) {
-  W[j] = new int64(str[j*2 + i], str[j*2 + i + 1]);
-  } else {
-  W[j] = safe_add_4(gamma1(W[j - 2]), W[j - 7], gamma0(W[j - 15]), W[j - 16]);
-  }
-  T1 = safe_add_5(h, sigma1(e), ch(e, f, g), K[j], W[j]);
-  T2 = safe_add_2(sigma0(a), maj(a, b, c));
-  h = g;
-  g = f;
-  f = e;
-  e = safe_add_2(d, T1);
-  d = c;
-  c = b;
-  b = a;
-  a = safe_add_2(T1, T2);
-  }
-  H[0] = safe_add_2(a, H[0]);
-  H[1] = safe_add_2(b, H[1]);
-  H[2] = safe_add_2(c, H[2]);
-  H[3] = safe_add_2(d, H[3]);
-  H[4] = safe_add_2(e, H[4]);
-  H[5] = safe_add_2(f, H[5]);
-  H[6] = safe_add_2(g, H[6]);
-  H[7] = safe_add_2(h, H[7]);
-  }
+  			for (var j = 0; j < 80; j++) {
+  				if (j < 16) {
+  					W[j] = new int64(str[j*2 + i], str[j*2 + i + 1]);
+  				} else {
+  					W[j] = safe_add_4(gamma1(W[j - 2]), W[j - 7], gamma0(W[j - 15]), W[j - 16]);
+  				}
+  				T1 = safe_add_5(h, sigma1(e), ch(e, f, g), K[j], W[j]);
+  				T2 = safe_add_2(sigma0(a), maj(a, b, c));
+  				h = g;
+  				g = f;
+  				f = e;
+  				e = safe_add_2(d, T1);
+  				d = c;
+  				c = b;
+  				b = a;
+  				a = safe_add_2(T1, T2);
+  			}
+  			H[0] = safe_add_2(a, H[0]);
+  			H[1] = safe_add_2(b, H[1]);
+  			H[2] = safe_add_2(c, H[2]);
+  			H[3] = safe_add_2(d, H[3]);
+  			H[4] = safe_add_2(e, H[4]);
+  			H[5] = safe_add_2(f, H[5]);
+  			H[6] = safe_add_2(g, H[6]);
+  			H[7] = safe_add_2(h, H[7]);
+  		}
 	
-  var binarray = [];
-  for (var i = 0; i < H.length; i++) {
-  binarray.push(H[i].highOrder);
-  binarray.push(H[i].lowOrder);
-  }
-  document.getElementById('out').innerHTML = binb2hex(binarray);
+  		var binarray = [];
+  		for (var i = 0; i < H.length; i++) {
+  			binarray.push(H[i].highOrder);
+  			binarray.push(H[i].lowOrder);
+  		}
+  		document.getElementById('out').innerHTML = binb2hex(binarray);
 }  
   </script>
+</head>
+<body>
 	<div style="text-align: center;">
 	<p><font size="20" color="white" face="Arial">Second homework by pizDouble.</font><br>
 	<img src="https://media.tenor.com/images/6f5f8d2d904f94b058c58ea7a58a948f/tenor.gif" >

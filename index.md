@@ -286,7 +286,6 @@
   } else {
   W[j] = safe_add_4(gamma1(W[j - 2]), W[j - 7], gamma0(W[j - 15]), W[j - 16]);
   }
-debugger;
   T1 = safe_add_5(h, sigma1(e), ch(e, f, g), K[j], W[j]);
   T2 = safe_add_2(sigma0(a), maj(a, b, c));
   h = g;

@@ -47,6 +47,7 @@
 		}
         document.getElementById('out').innerHTML = out;
 	}
+	//This code was taken from here - https://coursesweb.net/javascript/sha512-encrypt-hash_cs
 	function SHA512(str) {
 		instr = document.getElementById('in')
 		str += instr.value
